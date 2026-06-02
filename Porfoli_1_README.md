@@ -152,28 +152,17 @@ where  τ = t − n + 1   (the state being updated is n steps BEHIND the current
 
 ---
 
-### The Three Formulas Side by Side
-
-The **only difference** between all three algorithms is what goes inside `G` (the target).  
-The update rule shape is **identical** for all three:
-
-```
-Q(S, A) <- Q(S, A) + α [ G  −  Q(S, A) ]
-                         ^        ^
-                       target   current estimate
-```
-
 ```
 +--------------+-------------------------------------+------------------------------+
-|  Algorithm   |        Real Rewards Used           |         Bootstrap?            |
+|  Algorithm   |        Real Rewards Used            |         Bootstrap?           |
 +--------------+-------------------------------------+------------------------------+
-| Monte Carlo  |  ALL rewards R_{t+1} ... R_T       |  None — waits for end        |
+| Monte Carlo  |  ALL rewards R_{t+1} ... R_T        |  None — waits for end        |
 |   (n = inf)  |                                     |                              |
 +--------------+-------------------------------------+------------------------------+
-|  n-step      |  n rewards R_{t+1} ... R_{t+n}     |  y^n * Q(S_{t+n}, A_{t+n})  |
+|  n-step      |  n rewards R_{t+1} ... R_{t+n}      |  y^n * Q(S_{t+n}, A_{t+n})   |
 |  Sarsa       |                                     |  after n steps               |
 +--------------+-------------------------------------+------------------------------+
-|  1-step TD   |  1 reward  R_{t+1} only            |  y * Q(S_{t+1}, A_{t+1})    |
+|  1-step TD   |  1 reward  R_{t+1} only             |  y * Q(S_{t+1}, A_{t+1})     |
 |  Sarsa(0)    |                                     |  immediately                 |
 +--------------+-------------------------------------+------------------------------+
 ```
@@ -234,5 +223,3 @@ Q(S, A) <- Q(S, A) + α [ G  −  Q(S, A) ]
 > MIT Press. Chapter 7: n-step Bootstrapping — Section 7.2: n-step Sarsa.
 
 ---
-
-*Made as part of the Reinforcement Learning university course portfolio.*
