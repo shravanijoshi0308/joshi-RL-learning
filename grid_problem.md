@@ -85,8 +85,6 @@ All Q(s, a) = 0   for every state and every action
 
 ## Method 1 — 1-step Sarsa (n = 1)
 
-### Plain English First
-
 The coach gives feedback after every single action.
 After Step 1, the coach updates the score for Step 0.
 After Step 2, the coach updates Step 1.
@@ -195,7 +193,7 @@ After Episode 1:
 
 ## Method 2 — Monte Carlo (n = infinity)
 
-### Plain English First
+
 
 The coach waits until the entire trip is finished.
 Then reviews every single action from start to finish.
@@ -297,7 +295,6 @@ But remember — Monte Carlo had to wait for the **entire episode to finish** be
 
 ## Method 3 — n-step Sarsa (n = 4)
 
-### Plain English First
 
 The coach watches 4 actions then gives feedback.
 After seeing Actions 1, 2, 3, 4 — the coach updates Action 1.
@@ -442,32 +439,173 @@ The first two states got a pessimistic update (-2.0) because the goal reward had
 
 ---
 
-## Side by Side Comparison
+## Method 4 — Q-learning (off-policy)
+
+Q-learning is similar to 1-step Sarsa with one important difference.
+
+Sarsa updates using the action the agent **actually took** next.
+Q-learning updates using the **best possible** action at the next state — even if the agent did not take it.
+
+This makes Q-learning off-policy. It learns the optimal policy while behaving with epsilon-greedy.
+
+### The key difference from Sarsa
+
+```
+Sarsa update uses:      R  +  gamma x Q(S_next, A_next)
+                                        ────────────────
+                                        the action actually taken (epsilon-greedy)
+
+Q-learning update uses: R  +  gamma x max_a Q(S_next, a)
+                                        ──────────────────
+                                        the BEST action at S_next (greedy)
+                                        regardless of what was actually done
+```
+
+### The update rule
+
+```
+Q(S, A)  <--  Q(S, A)  +  alpha x [ R  +  gamma x max_a Q(S_next, a)  -  Q(S, A) ]
+                                             ──────────────────────────
+                                             greedy max — not what agent did
+```
+
+### How it updates — step by step
+
+Same path as before. Same rewards.
+
+```
+R1=-1  R2=-1  R3=-1  R4=-1  R5=-1  R6=+10
+```
+
+Because the Q-table starts at zero, `max_a Q(S_next, a) = 0` for every state at the start.
+This means Q-learning gives the same numbers as 1-step Sarsa in Episode 1 on a blank Q-table.
+
+**After Step 1:**
+```
+Updating:   Q( (0,0), Right )
+R           = -1
+max_a Q( (0,1), a )  =  max(0, 0, 0, 0)  =  0   (all zeros)
+
+G  =  -1  +  1.0 x 0  =  -1
+
+Q( (0,0), Right )  <--  0  +  0.5 x (-1 - 0)  =  -0.5
+```
+
+**After Step 2:**
+```
+Updating:   Q( (0,1), Right )
+max_a Q( (0,2), a )  =  0
+
+Q( (0,1), Right )  <--  0  +  0.5 x (-1 - 0)  =  -0.5
+```
+
+**After Step 3:**
+```
+Updating:   Q( (0,2), Right )
+max_a Q( (0,3), a )  =  0
+
+Q( (0,2), Right )  <--  0  +  0.5 x (-1 - 0)  =  -0.5
+```
+
+**After Step 4:**
+```
+Updating:   Q( (0,3), Down )
+max_a Q( (1,3), a )  =  0
+
+Q( (0,3), Down )  <--  0  +  0.5 x (-1 - 0)  =  -0.5
+```
+
+**After Step 5:**
+```
+Updating:   Q( (1,3), Down )
+max_a Q( (2,3), a )  =  0
+
+Q( (1,3), Down )  <--  0  +  0.5 x (-1 - 0)  =  -0.5
+```
+
+**After Step 6 — Goal reached:**
+```
+Updating:   Q( (2,3), Down )
+R           = +10
+max_a Q( (3,3), a )  =  0   (terminal state)
+
+G  =  +10  +  1.0 x 0  =  +10
+
+Q( (2,3), Down )  <--  0  +  0.5 x (10 - 0)  =  +5.0
+```
+
+### Q-table after Episode 1 — Method 4
+
+```
+State       Action      Q-value before    Q-value after
+(0,0)       Right       0                 -0.5
+(0,1)       Right       0                 -0.5
+(0,2)       Right       0                 -0.5
+(0,3)       Down        0                 -0.5
+(1,3)       Down        0                 -0.5
+(2,3)       Down        0                 +5.0
+```
+
+### What happened?
+
+The numbers are identical to 1-step Sarsa for Episode 1.
+
+This is because the Q-table was all zeros — `max_a Q(S_next, a) = 0` is the same as `Q(S_next, A_next) = 0`.
+
+The difference between Q-learning and Sarsa only shows up in **later episodes** when Q-values are no longer zero.
+
+### Where Q-learning behaves differently — Episode 2 example
+
+Suppose after Episode 1, Q( (2,3), Down ) = +5.0 and everything else is still small.
+
+Now the agent is at (1,3) and takes action Down to (2,3):
+
+```
+Sarsa update for (1,3):
+    A_next  =  epsilon-greedy at (2,3)
+            =  could be any action (exploring)
+    If agent explores and picks Left:  Q( (2,3), Left ) = -0.5
+    G  =  -1  +  1.0 x (-0.5)  =  -1.5
+    Q( (1,3), Down ) stays low
+
+Q-learning update for (1,3):
+    max_a Q( (2,3), a )  =  max(-0.5, -0.5, -0.5, +5.0)  =  +5.0  (always Down)
+    G  =  -1  +  1.0 x 5.0  =  +4.0
+    Q( (1,3), Down )  <--  0  +  0.5 x (4.0 - 0)  =  +2.0
+```
+
+Q-learning propagates the goal signal faster because it always uses the best known next action — even during exploration. Sarsa may use a random exploratory action and get a weaker update.
+
+---
+
+## Side by Side Comparison — All Four Methods
 
 ### Q-values after ONE episode
 
 ```
-State     Action    1-step Sarsa    Monte Carlo    n-step (n=4)
-(0,0)     Right        -0.5           +2.5            -2.0
-(0,1)     Right        -0.5           +3.0            -2.0
-(0,2)     Right        -0.5           +3.5            +3.5
-(0,3)     Down         -0.5           +4.0            +4.0
-(1,3)     Down         -0.5           +4.5            +4.5
-(2,3)     Down         +5.0           +5.0            +5.0
+State    Action   1-step Sarsa   Q-learning   Monte Carlo   n-step (n=4)
+(0,0)    Right       -0.5          -0.5          +2.5           -2.0
+(0,1)    Right       -0.5          -0.5          +3.0           -2.0
+(0,2)    Right       -0.5          -0.5          +3.5           +3.5
+(0,3)    Down        -0.5          -0.5          +4.0           +4.0
+(1,3)    Down        -0.5          -0.5          +4.5           +4.5
+(2,3)    Down        +5.0          +5.0          +5.0           +5.0
 ```
 
 ### States that learned something useful after Episode 1
 
 ```
 1-step Sarsa:    1  out of 6    (only the last step before goal)
-Monte Carlo:     6  out of 6    (all steps — but had to wait)
-n-step (n=4):    4  out of 6    (steps 3-6 — balance of both)
+Q-learning:      1  out of 6    (same as Sarsa — difference shows later)
+Monte Carlo:     6  out of 6    (all steps — but had to wait until end)
+n-step (n=4):    4  out of 6    (steps 3-6 — updates during episode)
 ```
 
 ### Updates made DURING the episode vs AFTER
 
 ```
 1-step Sarsa:    6 updates during episode   0 after
+Q-learning:      6 updates during episode   0 after
 Monte Carlo:     0 updates during episode   6 after
 n-step (n=4):    4 updates during episode   2 after (drain phase)
 ```
@@ -476,72 +614,90 @@ n-step (n=4):    4 updates during episode   2 after (drain phase)
 
 ## The Key Comparison Table
 
-| Property | 1-step Sarsa | Monte Carlo | n-step Sarsa (n=4) |
-|---|---|---|---|
-| Updates per episode | 6 | 6 | 6 |
-| Useful updates Episode 1 | 1 | 6 | 4 |
-| Updates during episode | Yes | No | Yes |
-| Uses real rewards | 1 per update | All per update | 4 per update |
-| Bootstrap | Yes — immediately | No | Yes — after n steps |
-| Start state learned goal? | No | Yes (+2.5) | Partial (-2.0, corrects later) |
-| Episodes to converge | Many | Fewer | In between |
+| Property | 1-step Sarsa | Q-learning | Monte Carlo | n-step Sarsa (n=4) |
+|---|---|---|---|---|
+| Policy type | On-policy | Off-policy | On-policy | On-policy |
+| Updates per episode | 6 | 6 | 6 | 6 |
+| Useful updates Ep 1 | 1 | 1 | 6 | 4 |
+| Updates during episode | Yes | Yes | No | Yes |
+| Real rewards used | 1 | 1 | All | 4 |
+| Bootstrap target | Q(S', A') actual | max Q(S', a) greedy | None | Q(S_n, A_n) after n |
+| Start state after Ep 1 | -0.5 | -0.5 | +2.5 | -2.0 (corrects) |
+| Converges to | Safe policy | Optimal policy | Unbiased policy | Near-optimal |
+| Risk near cliffs | Low | Higher during training | Low | Low |
+| Episodes to converge | Slow | Moderate | Moderate | Fast |
 
 ---
 
 ## What This Tells Us
 
-**1-step Sarsa** is too narrow. After one full episode only one state learned that the goal is nearby. The start state has no idea. It will take many more episodes before the goal signal reaches the start.
+**1-step Sarsa** is too narrow. Credit travels 1 step per episode. On a 6-step path it takes 6 episodes just to get useful values back to the start.
 
-**Monte Carlo** learned everything in one episode but had to wait until the end. In a long episode this is a big problem. Also the returns are noisy — one unlucky early step changes every single Q-value.
+**Q-learning** has the same first-episode performance as Sarsa but improves faster in later episodes because it always bootstraps from the best known action — not a random exploratory one. However near the cliff in Cliff Walking it can be risky during training.
 
-**n-step Sarsa (n=4)** is the middle ground. It updated 4 states usefully during the episode without waiting. The first two states got a temporary pessimistic value (-2.0) but this corrects itself in the next episode as the bootstrap estimates improve.
+**Monte Carlo** learns the most from Episode 1 but must wait until the episode ends. High variance from accumulating all rewards means it needs many episodes to stabilise.
+
+**n-step Sarsa (n=4)** is the best balance. It updates 4 states usefully during the episode. The first two states get corrected in the next episode. It is on-policy so it is safe near cliffs. And it converges faster than 1-step Sarsa on sparse reward environments.
 
 ---
 
 ## Visual Summary
 
 ```
-After 1 episode — which states know the goal is reachable?
+After 1 episode — Q-values on the path S to G
 
 1-step Sarsa:
-  S  →  →  →  →  →  G
-  ?     ?     ?     ?     ?   [YES]
-  Only the last step knows.
+  S     →     →     →     →     →     G
+[-0.5][-0.5][-0.5][-0.5][-0.5][+5.0]
+  Only the last step knows the goal.
+
+Q-learning (Episode 1 same as Sarsa):
+  S     →     →     →     →     →     G
+[-0.5][-0.5][-0.5][-0.5][-0.5][+5.0]
+  Same as Sarsa now. Pulls ahead in Episode 2+.
 
 Monte Carlo:
-  S  →  →  →  →  →  G
- [2.5][3.0][3.5][4.0][4.5][5.0]
+  S     →     →     →     →     →     G
+[+2.5][+3.0][+3.5][+4.0][+4.5][+5.0]
   Every step knows. But waited until episode ended.
 
 n-step Sarsa (n=4):
-  S  →  →  →  →  →  G
- [-2] [-2] [3.5][4.0][4.5][5.0]
+  S     →     →     →     →     →     G
+[-2.0][-2.0][+3.5][+4.0][+4.5][+5.0]
   Most steps know. Updated during episode.
-  First two will correct in next episode.
+  First two correct themselves in Episode 2.
 ```
 
 ---
 
 ## Conclusion — Which Method Wins on This Gridworld?
 
-For this 4x4 sparse gridworld:
+For the 4x4 sparse gridworld the ranking is:
 
-- **Monte Carlo** extracts the most information from one episode
-  but cannot update until the episode ends and has high variance
+```
+Rank 1:  n-step Sarsa (n=4)
+         Best balance of speed, safety, and online learning
 
-- **n-step Sarsa** is nearly as good as Monte Carlo per episode
-  while updating online during the episode
-  and with lower variance than Monte Carlo
+Rank 2:  Monte Carlo
+         Most information per episode but must wait and has high variance
 
-- **1-step Sarsa** is the weakest here because the reward is sparse
-  — only at the goal — so 1-step credit propagation is far too slow
+Rank 3:  Q-learning
+         Matches Sarsa at first but pulls ahead in later episodes
+         Slightly risky near traps due to off-policy greedy target
 
-**n-step Sarsa wins** on this gridworld because the reward is sparse.
-The advantage would be smaller if rewards were given at every step.
+Rank 4:  1-step Sarsa
+         Slowest credit propagation on sparse reward environment
+```
+
+**n-step Sarsa's advantage is largest here because:**
+- The reward is only at the goal (sparse)
+- Each episode that reaches the goal is very valuable
+- n-step extracts 4x more learning from each such episode than 1-step Sarsa
+- It updates online unlike Monte Carlo
 
 ---
 
 ## Reference
 
 Sutton, R.S. & Barto, A.G. (2018). *Reinforcement Learning: An Introduction* (2nd ed.).
-MIT Press. Chapter 7: n-step Bootstrapping, Section 7.2: n-step Sarsa.
+MIT Press. Chapter 6: TD Learning. Chapter 7: n-step Bootstrapping, Section 7.2.
