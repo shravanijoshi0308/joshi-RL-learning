@@ -53,7 +53,7 @@ The diagram is always read **top to bottom**:
 
 ## The Diagram
 
-![Backup Diagram](backup_diagram.svg)
+![Backup Diagram](backup_diagram_copy.svg)
 
 ---
 
