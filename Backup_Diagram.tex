@@ -1,0 +1,145 @@
+<svg viewBox="0 0 900 560" xmlns="http://www.w3.org/2000/svg" style="background:#fff;font-family:Georgia,serif">
+
+  <!-- TITLE -->
+  <text x="450" y="30" text-anchor="middle" font-size="15" font-weight="bold" fill="#111">Figure 7.3 — Backup Diagrams for n-step Sarsa</text>
+  <text x="450" y="50" text-anchor="middle" font-size="11" fill="#444" font-style="italic">Sutton &amp; Barto, Chapter 7.2, p.146</text>
+
+  <!-- LEGEND -->
+  <circle cx="30" cy="75" r="7" fill="#111"/>
+  <text x="42" y="79" font-size="11" fill="#333">= action (state-action pair)</text>
+  <circle cx="30" cy="95" r="7" fill="none" stroke="#111" stroke-width="1.5"/>
+  <text x="42" y="99" font-size="11" fill="#333">= state</text>
+
+  <!-- ═══════════════════════════════════════════ -->
+  <!-- COLUMN 1 — 1-step Sarsa aka Sarsa(0)        -->
+  <!-- ═══════════════════════════════════════════ -->
+  <text x="80" y="130" text-anchor="middle" font-size="12" font-weight="bold" fill="#111">1-step Sarsa</text>
+  <text x="80" y="145" text-anchor="middle" font-size="11" fill="#555" font-style="italic">aka Sarsa(0)</text>
+
+  <!-- node: filled circle (action) -->
+  <circle cx="80" cy="175" r="7" fill="#111"/>
+  <!-- arrow down -->
+  <line x1="80" y1="182" x2="80" y2="205" stroke="#111" stroke-width="1.5" marker-end="url(#arr)"/>
+  <!-- node: open circle (state) -->
+  <circle cx="80" cy="215" r="7" fill="none" stroke="#111" stroke-width="1.5"/>
+  <!-- arrow down -->
+  <line x1="80" y1="222" x2="80" y2="245" stroke="#111" stroke-width="1.5" marker-end="url(#arr)"/>
+  <!-- node: filled circle (action) — bootstrap here -->
+  <circle cx="80" cy="255" r="7" fill="#111"/>
+
+  <!-- bracket showing depth = 1 -->
+  <line x1="100" y1="175" x2="105" y2="175" stroke="#888" stroke-width="1"/>
+  <line x1="100" y1="255" x2="105" y2="255" stroke="#888" stroke-width="1"/>
+  <line x1="105" y1="175" x2="105" y2="255" stroke="#888" stroke-width="1"/>
+  <text x="110" y="218" font-size="10" fill="#888">n=1</text>
+
+  <!-- ═══════════════════════════════════════════ -->
+  <!-- COLUMN 2 — 2-step Sarsa                     -->
+  <!-- ═══════════════════════════════════════════ -->
+  <text x="210" y="130" text-anchor="middle" font-size="12" font-weight="bold" fill="#111">2-step Sarsa</text>
+
+  <circle cx="210" cy="175" r="7" fill="#111"/>
+  <line x1="210" y1="182" x2="210" y2="205" stroke="#111" stroke-width="1.5" marker-end="url(#arr)"/>
+  <circle cx="210" cy="215" r="7" fill="none" stroke="#111" stroke-width="1.5"/>
+  <line x1="210" y1="222" x2="210" y2="245" stroke="#111" stroke-width="1.5" marker-end="url(#arr)"/>
+  <circle cx="210" cy="255" r="7" fill="#111"/>
+  <line x1="210" y1="262" x2="210" y2="285" stroke="#111" stroke-width="1.5" marker-end="url(#arr)"/>
+  <circle cx="210" cy="295" r="7" fill="none" stroke="#111" stroke-width="1.5"/>
+  <line x1="210" y1="302" x2="210" y2="325" stroke="#111" stroke-width="1.5" marker-end="url(#arr)"/>
+  <circle cx="210" cy="335" r="7" fill="#111"/>
+
+  <line x1="230" y1="175" x2="235" y2="175" stroke="#888" stroke-width="1"/>
+  <line x1="230" y1="335" x2="235" y2="335" stroke="#888" stroke-width="1"/>
+  <line x1="235" y1="175" x2="235" y2="335" stroke="#888" stroke-width="1"/>
+  <text x="240" y="258" font-size="10" fill="#888">n=2</text>
+
+  <!-- ═══════════════════════════════════════════ -->
+  <!-- COLUMN 3 — 3-step Sarsa                     -->
+  <!-- ═══════════════════════════════════════════ -->
+  <text x="340" y="130" text-anchor="middle" font-size="12" font-weight="bold" fill="#111">3-step Sarsa</text>
+
+  <circle cx="340" cy="175" r="7" fill="#111"/>
+  <line x1="340" y1="182" x2="340" y2="205" stroke="#111" stroke-width="1.5" marker-end="url(#arr)"/>
+  <circle cx="340" cy="215" r="7" fill="none" stroke="#111" stroke-width="1.5"/>
+  <line x1="340" y1="222" x2="340" y2="245" stroke="#111" stroke-width="1.5" marker-end="url(#arr)"/>
+  <circle cx="340" cy="255" r="7" fill="#111"/>
+  <line x1="340" y1="262" x2="340" y2="285" stroke="#111" stroke-width="1.5" marker-end="url(#arr)"/>
+  <circle cx="340" cy="295" r="7" fill="none" stroke="#111" stroke-width="1.5"/>
+  <line x1="340" y1="302" x2="340" y2="325" stroke="#111" stroke-width="1.5" marker-end="url(#arr)"/>
+  <circle cx="340" cy="335" r="7" fill="#111"/>
+  <line x1="340" y1="342" x2="340" y2="365" stroke="#111" stroke-width="1.5" marker-end="url(#arr)"/>
+  <circle cx="340" cy="375" r="7" fill="none" stroke="#111" stroke-width="1.5"/>
+  <line x1="340" y1="382" x2="340" y2="405" stroke="#111" stroke-width="1.5" marker-end="url(#arr)"/>
+  <circle cx="340" cy="415" r="7" fill="#111"/>
+
+  <line x1="360" y1="175" x2="365" y2="175" stroke="#888" stroke-width="1"/>
+  <line x1="360" y1="415" x2="365" y2="415" stroke="#888" stroke-width="1"/>
+  <line x1="365" y1="175" x2="365" y2="415" stroke="#888" stroke-width="1"/>
+  <text x="370" y="298" font-size="10" fill="#888">n=3</text>
+
+  <!-- dots -->
+  <text x="450" y="300" text-anchor="middle" font-size="20" fill="#555">. . .</text>
+
+  <!-- ═══════════════════════════════════════════ -->
+  <!-- COLUMN 4 — inf-step Sarsa aka Monte Carlo   -->
+  <!-- ═══════════════════════════════════════════ -->
+  <text x="590" y="130" text-anchor="middle" font-size="12" font-weight="bold" fill="#111">inf-step Sarsa</text>
+  <text x="590" y="145" text-anchor="middle" font-size="11" fill="#555" font-style="italic">aka Monte Carlo</text>
+
+  <circle cx="590" cy="175" r="7" fill="#111"/>
+  <line x1="590" y1="182" x2="590" y2="205" stroke="#111" stroke-width="1.5" marker-end="url(#arr)"/>
+  <circle cx="590" cy="215" r="7" fill="none" stroke="#111" stroke-width="1.5"/>
+  <line x1="590" y1="222" x2="590" y2="245" stroke="#111" stroke-width="1.5" marker-end="url(#arr)"/>
+  <circle cx="590" cy="255" r="7" fill="#111"/>
+  <line x1="590" y1="262" x2="590" y2="285" stroke="#111" stroke-width="1.5" marker-end="url(#arr)"/>
+  <circle cx="590" cy="295" r="7" fill="none" stroke="#111" stroke-width="1.5"/>
+  <!-- dots -->
+  <text x="590" y="335" text-anchor="middle" font-size="16" fill="#333">&#8942;</text>
+  <!-- terminal square -->
+  <line x1="590" y1="350" x2="590" y2="385" stroke="#111" stroke-width="1.5" marker-end="url(#arr)"/>
+  <rect x="579" y="390" width="22" height="22" fill="none" stroke="#111" stroke-width="2"/>
+  <text x="590" y="430" text-anchor="middle" font-size="10" fill="#555">terminal</text>
+  <text x="590" y="442" text-anchor="middle" font-size="10" fill="#555">state T</text>
+
+  <!-- ═══════════════════════════════════════════ -->
+  <!-- COLUMN 5 — n-step Expected Sarsa            -->
+  <!-- ═══════════════════════════════════════════ -->
+  <text x="780" y="130" text-anchor="middle" font-size="12" font-weight="bold" fill="#111">n-step</text>
+  <text x="780" y="145" text-anchor="middle" font-size="11" fill="#555" font-style="italic">Expected Sarsa</text>
+
+  <circle cx="780" cy="175" r="7" fill="#111"/>
+  <line x1="780" y1="182" x2="780" y2="205" stroke="#111" stroke-width="1.5" marker-end="url(#arr)"/>
+  <circle cx="780" cy="215" r="7" fill="none" stroke="#111" stroke-width="1.5"/>
+  <line x1="780" y1="222" x2="780" y2="245" stroke="#111" stroke-width="1.5" marker-end="url(#arr)"/>
+  <circle cx="780" cy="255" r="7" fill="#111"/>
+  <line x1="780" y1="262" x2="780" y2="285" stroke="#111" stroke-width="1.5" marker-end="url(#arr)"/>
+  <circle cx="780" cy="295" r="7" fill="none" stroke="#111" stroke-width="1.5"/>
+  <text x="780" y="335" text-anchor="middle" font-size="16" fill="#333">&#8942;</text>
+  <!-- final state branches to all actions -->
+  <line x1="780" y1="350" x2="780" y2="375" stroke="#111" stroke-width="1.5" marker-end="url(#arr)"/>
+  <circle cx="780" cy="385" r="7" fill="none" stroke="#111" stroke-width="1.5"/>
+  <!-- three branches from final state -->
+  <line x1="775" y1="392" x2="745" y2="418" stroke="#111" stroke-width="1.5" marker-end="url(#arr)"/>
+  <line x1="780" y1="392" x2="780" y2="418" stroke="#111" stroke-width="1.5" marker-end="url(#arr)"/>
+  <line x1="785" y1="392" x2="815" y2="418" stroke="#111" stroke-width="1.5" marker-end="url(#arr)"/>
+  <circle cx="745" cy="425" r="6" fill="#111"/>
+  <circle cx="780" cy="425" r="6" fill="#111"/>
+  <circle cx="815" cy="425" r="6" fill="#111"/>
+  <text x="780" y="448" text-anchor="middle" font-size="10" fill="#555">all actions</text>
+  <text x="780" y="460" text-anchor="middle" font-size="10" fill="#555">weighted by pi</text>
+
+  <!-- CAPTION -->
+  <line x1="20" y1="490" x2="880" y2="490" stroke="#ccc" stroke-width="1"/>
+  <text x="450" y="510" text-anchor="middle" font-size="11" font-weight="bold" fill="#222">Reading the diagram:</text>
+  <text x="450" y="525" text-anchor="middle" font-size="11" fill="#444">Filled circle = action node   Open circle = state node   Depth = n steps   Bootstrap from bottom node</text>
+  <text x="450" y="542" text-anchor="middle" font-size="11" fill="#444">Deeper diagram = more real rewards used = closer to Monte Carlo</text>
+
+  <!-- ARROWHEAD MARKER -->
+  <defs>
+    <marker id="arr" viewBox="0 0 10 10" refX="8" refY="5"
+            markerWidth="5" markerHeight="5" orient="auto-start-reverse">
+      <path d="M 0 1 L 9 5 L 0 9 z" fill="#111"/>
+    </marker>
+  </defs>
+
+</svg>
