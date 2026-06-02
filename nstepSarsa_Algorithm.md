@@ -42,8 +42,7 @@ Loop for each episode:
 
 ---
 
-## Every Line Explained — Beginner Friendly
-
+## Every Line Explained
 ---
 
 ### Line 1
@@ -398,7 +397,7 @@ After reaching goal:
 | 15 | `Until tau = T-1` | Run until all steps in episode are updated |
 
 ---
-
+## lets apply our Driving Analogy intution to the algorithm 
 ## The Driving Analogy Mapped to the Code
 
 | Algorithm line | Driving analogy |
