@@ -267,6 +267,17 @@ Q(S, A)  <--  Q(S, A)  +  alpha x [ R  +  gamma x Q(S_next, A_next)  -  Q(S, A) 
 
 The agent chooses the next action A_next using epsilon-greedy BEFORE updating.
 That next action is used in the formula.
+What is epsilon-greedy?
+It is the rule the agent uses to pick an action.
+The agent has two choices at every state:
+Option 1 — Exploit:  pick the action with the HIGHEST Q-value
+Option 2 — Explore:  pick a RANDOM action
+Epsilon-greedy combines both using a probability:
+With probability ε        →   pick RANDOM action    (explore)
+With probability 1 − ε    →   pick BEST action       (exploit)
+If ε = 0.1 that means:
+10% of the time  →  random action
+90% of the time  →  best known action
 
 ---
 
