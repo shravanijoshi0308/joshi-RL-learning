@@ -14,10 +14,8 @@
 4. [The n-step Spectrum](#4-the-n-step-spectrum)
 5. [Bias and Variance](#5-bias-and-variance)
 6. [Can We Reduce the Bias-Variance Tradeoff?](#6-can-we-reduce-the-bias-variance-tradeoff)
-7. [The Formula — Line by Line](#7-the-formula--line-by-line)
-8. [Gridworld Results](#8-gridworld-results)
-9. [How to Run](#9-how-to-run)
-
+7. [The Formula]
+(#7-the-formula)
 ---
 
 ## 1. The Driving Analogy — Intuition
@@ -226,7 +224,7 @@ n=∞    →  no bias,     high variance   (Monte Carlo)
 
 ---
 
-## 7. The Formula — Line by Line
+## 7. The Formula 
 
 ### The n-step Return (Equation 7.4)
 
